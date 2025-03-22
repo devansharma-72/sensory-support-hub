@@ -25,14 +25,26 @@ const Navbar: React.FC = () => {
   }, [location]);
 
   useEffect(() => {
-    // Set default to light mode
-    document.documentElement.classList.remove('dark');
-    setIsDarkMode(false);
+    // Check if user prefers dark mode from localStorage
+    const isDark = localStorage.getItem('darkMode') === 'true';
+    setIsDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
   
   const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    const newDarkMode = !isDarkMode;
+    setIsDarkMode(newDarkMode);
+    localStorage.setItem('darkMode', String(newDarkMode));
+    
+    if (newDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   };
 
   const navLinks = [
@@ -49,7 +61,12 @@ const Navbar: React.FC = () => {
     <header 
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out-expo',
-        scrolled ? 'py-3 bg-white/90 backdrop-blur-lg shadow-sm' : 'py-5 bg-transparent'
+        scrolled 
+          ? 'py-3 shadow-sm backdrop-blur-lg dark:shadow-slate-800/10' 
+          : 'py-5',
+        isDarkMode 
+          ? 'bg-slate-900/90 text-white' 
+          : 'bg-white/90 text-foreground'
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -81,7 +98,7 @@ const Navbar: React.FC = () => {
                   to={link.path}
                   className={cn(
                     'relative px-2 py-1 font-medium transition-colors duration-200 hover:text-primary',
-                    isActive(link.path) ? 'text-primary' : 'text-foreground/80'
+                    isActive(link.path) ? 'text-primary' : isDarkMode ? 'text-white/80' : 'text-foreground/80'
                   )}
                 >
                   {link.name}
@@ -98,7 +115,12 @@ const Navbar: React.FC = () => {
           </ul>
           <button
             onClick={toggleDarkMode}
-            className="p-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
+            className={cn(
+              "p-2 rounded-full transition-colors",
+              isDarkMode 
+                ? "bg-slate-800 hover:bg-slate-700" 
+                : "bg-secondary hover:bg-secondary/80"
+            )}
             aria-label="Toggle dark mode"
           >
             <AnimatePresence mode="wait">
@@ -131,14 +153,24 @@ const Navbar: React.FC = () => {
         <div className="flex items-center md:hidden">
           <button
             onClick={toggleDarkMode}
-            className="p-2 mr-2 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
+            className={cn(
+              "p-2 mr-2 rounded-full transition-colors",
+              isDarkMode 
+                ? "bg-slate-800 hover:bg-slate-700" 
+                : "bg-secondary hover:bg-secondary/80"
+            )}
             aria-label="Toggle dark mode"
           >
             {isDarkMode ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
           </button>
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-lg hover:bg-secondary transition-colors"
+            className={cn(
+              "p-2 rounded-lg transition-colors",
+              isDarkMode 
+                ? "hover:bg-slate-800" 
+                : "hover:bg-secondary"
+            )}
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -154,7 +186,12 @@ const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
-            className="md:hidden bg-background border-t overflow-hidden"
+            className={cn(
+              "md:hidden border-t overflow-hidden",
+              isDarkMode 
+                ? "bg-slate-900 border-slate-800" 
+                : "bg-background border-slate-200"
+            )}
           >
             <div className="container mx-auto px-4 py-4">
               <ul className="space-y-4">
@@ -168,10 +205,12 @@ const Navbar: React.FC = () => {
                     <Link
                       to={link.path}
                       className={cn(
-                        'block py-2 px-4 rounded-lg transition-colors',
+                        "block py-2 px-4 rounded-lg transition-colors",
                         isActive(link.path) 
-                          ? 'bg-primary/10 text-primary font-medium' 
-                          : 'hover:bg-secondary'
+                          ? "bg-primary/10 text-primary font-medium" 
+                          : isDarkMode 
+                            ? "hover:bg-slate-800" 
+                            : "hover:bg-secondary"
                       )}
                     >
                       {link.name}

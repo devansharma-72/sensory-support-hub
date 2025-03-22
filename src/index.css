@@ -58,7 +58,7 @@
     --popover-foreground: 210 40% 98%;
 
     --primary: 210 100% 50%;
-    --primary-foreground: 222 47% 11%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
@@ -66,7 +66,7 @@
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
 
-    --accent: 243 75% 59%;
+    --accent: 210 100% 50%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
@@ -75,6 +75,15 @@
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 213 27% 84%;
+
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 210 100% 50%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 213 27% 84%;
   }
 
   * {
@@ -104,17 +113,17 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-secondary/30 rounded-full;
+    @apply bg-secondary/30 rounded-full dark:bg-slate-800/30;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-primary/30 rounded-full hover:bg-primary/50 transition-colors;
+    @apply bg-primary/30 rounded-full hover:bg-primary/50 transition-colors dark:bg-primary/50 dark:hover:bg-primary/70;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-white/95 backdrop-blur-lg border border-blue-100 shadow-sm;
+    @apply bg-white/95 backdrop-blur-lg border border-blue-100 shadow-sm dark:bg-slate-900/95 dark:border-slate-800;
   }
   
   .sensory-transition {
@@ -127,5 +136,9 @@
 
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .dark-card {
+    @apply bg-white dark:bg-slate-900 dark:border-slate-800 dark:shadow-slate-900/20;
   }
 }

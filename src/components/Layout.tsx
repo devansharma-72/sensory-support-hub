@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
       >
         {children}
       </motion.main>
-      <footer className="py-6 md:py-8 border-t">
+      <footer className="py-6 md:py-8 border-t dark:border-slate-800">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">

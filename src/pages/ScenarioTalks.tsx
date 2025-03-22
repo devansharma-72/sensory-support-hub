@@ -192,11 +192,11 @@ const ScenarioTalks: React.FC = () => {
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-background">
       <div className="container mx-auto px-4 md:px-6 py-8">
         <AnimatedTransition type="fade">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-blue-900">Scenario Talks</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-primary">Scenario Talks</h1>
             <p className="text-muted-foreground">Practice your responses to various social scenarios and receive feedback.</p>
           </div>
         </AnimatedTransition>
@@ -204,7 +204,7 @@ const ScenarioTalks: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <AnimatedTransition type="fade" delay={0.1}>
             <div className="lg:col-span-1">
-              <Card>
+              <Card className="dark-card">
                 <CardHeader>
                   <CardTitle>Choose a Scenario</CardTitle>
                   <CardDescription>Select a scenario to practice your response</CardDescription>
@@ -227,7 +227,7 @@ const ScenarioTalks: React.FC = () => {
                                 className={`p-3 rounded-lg cursor-pointer transition-colors ${
                                   selectedScenario?.id === scenario.id
                                     ? 'bg-primary text-white'
-                                    : 'bg-secondary hover:bg-primary/10'
+                                    : 'bg-secondary hover:bg-primary/10 dark:bg-slate-800 dark:hover:bg-primary/20'
                                 }`}
                                 onClick={() => selectScenario(scenario)}
                               >
@@ -247,7 +247,7 @@ const ScenarioTalks: React.FC = () => {
 
           <AnimatedTransition type="fade" delay={0.2}>
             <div className="lg:col-span-2">
-              <Card className="h-full flex flex-col">
+              <Card className="h-full flex flex-col dark-card">
                 {selectedScenario ? (
                   <>
                     <CardHeader>
@@ -314,8 +314,8 @@ const ScenarioTalks: React.FC = () => {
                         </div>
                         {feedback && (
                           <div className="mt-4">
-                            <h3 className="font-medium text-lg text-blue-800 mb-2">Feedback</h3>
-                            <Card className="bg-blue-50">
+                            <h3 className="font-medium text-lg text-primary mb-2">Feedback</h3>
+                            <Card className="bg-primary/5 dark:bg-primary/10 border-primary/10">
                               <CardContent className="pt-4">
                                 <p>{feedback}</p>
                               </CardContent>
@@ -333,7 +333,7 @@ const ScenarioTalks: React.FC = () => {
                 ) : (
                   <div className="flex items-center justify-center h-full p-8">
                     <div className="text-center">
-                      <div className="bg-blue-100 rounded-full p-4 inline-flex mb-4">
+                      <div className="bg-primary/10 rounded-full p-4 inline-flex mb-4">
                         <Video className="h-8 w-8 text-primary" />
                       </div>
                       <h3 className="text-xl font-medium mb-2">Select a Scenario</h3>

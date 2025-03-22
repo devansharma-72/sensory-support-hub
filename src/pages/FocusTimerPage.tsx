@@ -20,14 +20,14 @@ const FocusTimerPage: React.FC = () => {
         
         <div className="max-w-3xl mx-auto">
           <AnimatedTransition type="fade" delay={0.1}>
-            <div className="bg-white shadow-sm rounded-lg p-6 mb-8">
+            <div className="dark-card shadow-sm rounded-lg p-6 mb-8">
               <FocusTimer />
             </div>
           </AnimatedTransition>
           
           <AnimatedTransition type="fade" delay={0.2}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white p-5 rounded-lg shadow-sm">
+              <div className="dark-card p-5 rounded-lg shadow-sm">
                 <div className="flex items-center mb-3">
                   <Clock className="h-5 w-5 text-primary mr-2" />
                   <h3 className="font-medium">Time Management</h3>
@@ -37,7 +37,7 @@ const FocusTimerPage: React.FC = () => {
                 </p>
               </div>
               
-              <div className="bg-white p-5 rounded-lg shadow-sm">
+              <div className="dark-card p-5 rounded-lg shadow-sm">
                 <div className="flex items-center mb-3">
                   <Brain className="h-5 w-5 text-primary mr-2" />
                   <h3 className="font-medium">Cognitive Benefits</h3>
@@ -47,7 +47,7 @@ const FocusTimerPage: React.FC = () => {
                 </p>
               </div>
               
-              <div className="bg-white p-5 rounded-lg shadow-sm">
+              <div className="dark-card p-5 rounded-lg shadow-sm">
                 <div className="flex items-center mb-3">
                   <Lightbulb className="h-5 w-5 text-primary mr-2" />
                   <h3 className="font-medium">Customization</h3>
