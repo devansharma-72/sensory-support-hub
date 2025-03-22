@@ -42,6 +42,7 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Scenario Talks', path: '/scenario-talks' },
     { name: 'Community', path: '/community' },
     { name: 'Journal', path: '/journal' },
   ];
@@ -52,7 +53,7 @@ const Navbar: React.FC = () => {
     <header 
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out-expo',
-        scrolled ? 'py-3 bg-white/80 dark:bg-black/30 backdrop-blur-lg shadow-sm' : 'py-5 bg-transparent'
+        scrolled ? 'py-3 bg-white/90 backdrop-blur-lg shadow-sm' : 'py-5 bg-transparent'
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">

@@ -8,6 +8,7 @@ import { AnimatePresence } from "framer-motion";
 import Layout from "./components/Layout";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
+import ScenarioTalks from "./pages/ScenarioTalks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Layout><Index /></Layout>} />
             <Route path="/dashboard" element={<Layout><Dashboard /></Layout>} />
+            <Route path="/scenario-talks" element={<Layout><ScenarioTalks /></Layout>} />
             <Route path="*" element={<Layout><NotFound /></Layout>} />
           </Routes>
         </AnimatePresence>

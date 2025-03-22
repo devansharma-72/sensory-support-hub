@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 0 0% 100%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
@@ -17,7 +17,7 @@
     --popover-foreground: 222 47% 11%;
 
     --primary: 210 100% 50%;
-    --primary-foreground: 210 40% 98%;
+    --primary-foreground: 0 0% 100%;
 
     --secondary: 220 14% 96%;
     --secondary-foreground: 222 47% 11%;
@@ -25,11 +25,11 @@
     --muted: 210 40% 96%;
     --muted-foreground: 215 16% 47%;
 
-    --accent: 243 75% 59%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 210 100% 60%;
+    --accent-foreground: 0 0% 100%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
     --border: 214 32% 91%;
     --input: 214 32% 91%;
@@ -114,7 +114,7 @@
 
 @layer components {
   .glass-card {
-    @apply bg-white/80 dark:bg-black/20 backdrop-blur-lg border border-white/20 dark:border-white/10;
+    @apply bg-white/95 backdrop-blur-lg border border-blue-100 shadow-sm;
   }
   
   .sensory-transition {
