@@ -16,7 +16,6 @@ import {
   Activity,
   Plus
 } from 'lucide-react';
-import Layout from '@/components/Layout';
 import FeatureCard from '@/components/FeatureCard';
 import AnimatedTransition from '@/components/AnimatedTransition';
 import { Button } from '@/components/ui/button';
@@ -100,7 +99,7 @@ const Dashboard = () => {
   ];
 
   return (
-    <Layout className="bg-gradient-to-b from-background to-background/80">
+    <div className="bg-gradient-to-b from-background to-background/80">
       <div className="container mx-auto px-4 md:px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
           <AnimatedTransition type="fade">
@@ -254,7 +253,7 @@ const Dashboard = () => {
           </div>
         </AnimatedTransition>
       </div>
-    </Layout>
+    </div>
   );
 };
 

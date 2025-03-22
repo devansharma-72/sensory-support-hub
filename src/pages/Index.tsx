@@ -14,7 +14,6 @@ import {
   Gamepad, 
   Music 
 } from 'lucide-react';
-import Layout from '@/components/Layout';
 import FeatureCard from '@/components/FeatureCard';
 import AnimatedTransition from '@/components/AnimatedTransition';
 import { Button } from '@/components/ui/button';
@@ -90,7 +89,7 @@ const Index = () => {
   ];
 
   return (
-    <Layout>
+    <>
       {/* Hero Section */}
       <section className="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden">
         <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -188,7 +187,7 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </Layout>
+    </>
   );
 };
 
