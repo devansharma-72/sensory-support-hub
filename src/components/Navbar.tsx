@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Moon, Sun } from 'lucide-react';
+import { Menu, X, Moon, Sun, Clock } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -25,13 +25,9 @@ const Navbar: React.FC = () => {
   }, [location]);
 
   useEffect(() => {
-    // Check system preference
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    setIsDarkMode(prefersDark);
-    
-    if (prefersDark) {
-      document.documentElement.classList.add('dark');
-    }
+    // Set default to light mode
+    document.documentElement.classList.remove('dark');
+    setIsDarkMode(false);
   }, []);
   
   const toggleDarkMode = () => {
@@ -42,9 +38,9 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
+    { name: 'Focus Timer', path: '/focus-timer' },
     { name: 'Scenario Talks', path: '/scenario-talks' },
     { name: 'Community', path: '/community' },
-    { name: 'Journal', path: '/journal' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

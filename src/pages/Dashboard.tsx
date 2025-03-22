@@ -14,8 +14,11 @@ import {
   Bell,
   Calendar,
   Activity,
-  Plus
+  Plus,
+  Book,
+  Timer
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import FeatureCard from '@/components/FeatureCard';
 import AnimatedTransition from '@/components/AnimatedTransition';
 import { Button } from '@/components/ui/button';
@@ -23,6 +26,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
+  
   const featureSections = [
     {
       title: "Daily Tools",
@@ -39,6 +44,7 @@ const Dashboard = () => {
           description: 'Customize work and break intervals to maintain focus',
           icon: Clock,
           color: 'sensory-focus',
+          onClick: () => navigate('/focus-timer'),
         },
         {
           title: 'Journal',
@@ -110,10 +116,16 @@ const Dashboard = () => {
           </AnimatedTransition>
           
           <AnimatedTransition type="fade" delay={0.1}>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              New Task
-            </Button>
+            <div className="flex space-x-2">
+              <Button onClick={() => navigate('/focus-timer')} variant="outline" className="flex items-center">
+                <Timer className="mr-2 h-4 w-4" />
+                Focus Timer
+              </Button>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Task
+              </Button>
+            </div>
           </AnimatedTransition>
         </div>
 
@@ -180,7 +192,7 @@ const Dashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start">
+                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start" onClick={() => navigate('/focus-timer')}>
                     <Clock className="mr-2 h-4 w-4" />
                     Timer
                   </Button>
@@ -193,8 +205,8 @@ const Dashboard = () => {
                     Schedule
                   </Button>
                   <Button variant="outline" size="sm" className="h-auto py-2 justify-start">
-                    <Activity className="mr-2 h-4 w-4" />
-                    Progress
+                    <Book className="mr-2 h-4 w-4" />
+                    Journal
                   </Button>
                 </div>
               </CardContent>
