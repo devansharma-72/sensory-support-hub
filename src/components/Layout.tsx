@@ -11,7 +11,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children, className }) => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-background">
       <Navbar />
       <motion.main 
         initial={{ opacity: 0 }}
@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, className }) => {
       >
         {children}
       </motion.main>
-      <footer className="py-6 md:py-8 border-t dark:border-slate-800">
+      <footer className="py-6 md:py-8 border-t dark:border-slate-800 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="mb-4 md:mb-0">

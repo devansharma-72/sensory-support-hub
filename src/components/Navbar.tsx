@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Moon, Sun, Clock } from 'lucide-react';
+import { Menu, X, Moon, Sun } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -51,8 +51,9 @@ const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Focus Timer', path: '/focus-timer' },
+    { name: 'Journal', path: '/journal' },
     { name: 'Scenario Talks', path: '/scenario-talks' },
-    { name: 'Community', path: '/community' },
+    { name: 'Contact Us', path: '/contact-us' },
   ];
 
   const isActive = (path: string) => location.pathname === path;

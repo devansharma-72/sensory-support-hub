@@ -7,7 +7,6 @@ import {
   Users, 
   BookOpen, 
   Mic, 
-  Star, 
   MessageSquare, 
   Gamepad, 
   Music,
@@ -38,6 +37,7 @@ const Dashboard = () => {
           description: 'Set custom notifications for important tasks and events',
           icon: Bell,
           color: 'sensory-calm',
+          onClick: () => navigate('/reminders'),
         },
         {
           title: 'Focus Timer',
@@ -51,6 +51,7 @@ const Dashboard = () => {
           description: 'Document your thoughts, feelings, and experiences',
           icon: BookOpen,
           color: 'primary',
+          onClick: () => navigate('/journal'),
         },
       ]
     },
@@ -87,18 +88,21 @@ const Dashboard = () => {
           description: 'Practice responses to common social situations',
           icon: MessageSquare,
           color: 'sensory-focus',
+          onClick: () => navigate('/scenario-talks'),
         },
         {
           title: 'Memory Games',
           description: 'Engaging activities to strengthen memory skills',
           icon: Gamepad,
           color: 'sensory-joy',
+          onClick: () => navigate('/memory-game'),
         },
         {
           title: 'Focus Playlist',
           description: 'Generate custom audio environments for concentration',
           icon: Music,
           color: 'primary',
+          onClick: () => navigate('/focus-playlist'),
         },
       ]
     }
@@ -116,14 +120,22 @@ const Dashboard = () => {
           </AnimatedTransition>
           
           <AnimatedTransition type="fade" delay={0.1}>
-            <div className="flex space-x-2">
+            <div className="flex flex-wrap gap-2">
               <Button onClick={() => navigate('/focus-timer')} variant="outline" className="flex items-center">
                 <Timer className="mr-2 h-4 w-4" />
                 Focus Timer
               </Button>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Task
+              <Button onClick={() => navigate('/journal')} variant="outline" className="flex items-center">
+                <Book className="mr-2 h-4 w-4" />
+                Journal
+              </Button>
+              <Button onClick={() => navigate('/focus-playlist')} variant="outline" className="flex items-center">
+                <Music className="mr-2 h-4 w-4" />
+                Playlist
+              </Button>
+              <Button onClick={() => navigate('/memory-game')} variant="outline" className="flex items-center">
+                <Gamepad className="mr-2 h-4 w-4" />
+                Memory Game
               </Button>
             </div>
           </AnimatedTransition>
@@ -196,22 +208,22 @@ const Dashboard = () => {
                     <Clock className="mr-2 h-4 w-4" />
                     Timer
                   </Button>
-                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start">
-                    <Heart className="mr-2 h-4 w-4" />
-                    Calming
+                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start" onClick={() => navigate('/reminders')}>
+                    <Bell className="mr-2 h-4 w-4" />
+                    Reminders
                   </Button>
-                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start">
-                    <Calendar className="mr-2 h-4 w-4" />
-                    Schedule
-                  </Button>
-                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start">
+                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start" onClick={() => navigate('/journal')}>
                     <Book className="mr-2 h-4 w-4" />
                     Journal
+                  </Button>
+                  <Button variant="outline" size="sm" className="h-auto py-2 justify-start" onClick={() => navigate('/focus-playlist')}>
+                    <Music className="mr-2 h-4 w-4" />
+                    Playlist
                   </Button>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" size="sm" className="w-full">Customize</Button>
+                <Button variant="outline" size="sm" className="w-full" onClick={() => navigate('/dashboard')}>Customize</Button>
               </CardFooter>
             </Card>
           </div>
@@ -235,34 +247,13 @@ const Dashboard = () => {
                       icon={feature.icon}
                       color={feature.color as any}
                       className="h-full"
+                      onClick={feature.onClick}
                     />
                   ))}
                 </div>
               </TabsContent>
             ))}
           </Tabs>
-        </AnimatedTransition>
-
-        <AnimatedTransition type="fade" delay={0.4}>
-          <div className="rounded-xl p-6 bg-primary/5 border border-primary/20">
-            <h2 className="text-xl font-semibold mb-4">Recommendations for You</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-start space-x-4">
-                <Star className="h-5 w-5 text-primary mt-0.5" />
-                <div>
-                  <h3 className="font-medium">Try a Memory Game</h3>
-                  <p className="text-sm text-muted-foreground">Exercise your memory with our new pattern matching game.</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-4">
-                <Music className="h-5 w-5 text-primary mt-0.5" />
-                <div>
-                  <h3 className="font-medium">Focus Playlist</h3>
-                  <p className="text-sm text-muted-foreground">Generate a custom playlist to help you stay focused.</p>
-                </div>
-              </div>
-            </div>
-          </div>
         </AnimatedTransition>
       </div>
     </div>
