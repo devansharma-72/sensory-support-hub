@@ -1,73 +1,161 @@
-
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Bot, Send, Mic, MicOff, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/components/ui/use-toast';
+
+// Type declarations
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+  }
+}
+
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp?: Date;
+}
 
 const AIAssistant: React.FC = () => {
+  const { toast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([
-    { role: 'assistant', content: 'Hello! I\'m your assistant. How can I help you today?' }
+  const [messages, setMessages] = useState<ChatMessage[]>([
+    { 
+      role: 'assistant', 
+      content: 'Hello! I\'m your assistant. How can I help you today?',
+      timestamp: new Date()
+    }
   ]);
   const [input, setInput] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false); // Add this state
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
-  // Simulated responses - in a real app, these would be API calls
-  const getAssistantResponse = (userInput: string) => {
-    const responses = [
-      "I understand that can be challenging. Would you like some strategies to help?",
-      "That's a good question. Based on common practices, you might want to consider...",
-      "I hear you. Many people with sensory sensitivities find that...",
-      "Let me help you with that. Have you tried...",
-      "Great job on recognizing that pattern. Would you like to explore this further?",
-    ];
-    
-    // Simulate response selection based on input
-    if (userInput.toLowerCase().includes('anxious') || userInput.toLowerCase().includes('anxiety')) {
-      return "Feeling anxious is common. Try taking deep breaths - inhale for 4 counts, hold for 4, exhale for 6. Would you like more calming techniques?";
-    } else if (userInput.toLowerCase().includes('overwhelm')) {
-      return "When you're feeling overwhelmed, try the 5-4-3-2-1 grounding technique: acknowledge 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-    } else {
-      // Random response for other inputs
-      return responses[Math.floor(Math.random() * responses.length)];
+  const recognition = useRef<any>(null);
+  const synthesis = useRef<SpeechSynthesis | null>(null);
+
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition;
+      recognition.current = new SpeechRecognition();
+      recognition.current.continuous = false;
+      recognition.current.interimResults = false;
+      recognition.current.lang = 'en-US';
+
+      recognition.current.onresult = (event: any) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(transcript);
+        setIsListening(false);
+      };
+
+      recognition.current.onerror = (event: any) => {
+        setIsListening(false);
+        toast({
+          variant: "destructive",
+          title: "Speech Recognition Error",
+          description: event.error
+        });
+      };
+
+      recognition.current.onspeechend = () => {
+        setIsListening(false);
+      };
+
+      recognition.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+
+    synthesis.current = window.speechSynthesis;
+  }, [toast]);
+
+  // Stop speech function
+  const stopSpeech = () => {
+    if (synthesis.current) {
+      synthesis.current.cancel();
+      setIsSpeaking(false);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
-    
-    // Add user message
-    setMessages(prev => [...prev, { role: 'user', content: input }]);
-    
-    // Clear input field
-    setInput('');
-    
-    // Simulate AI response after a short delay
-    setTimeout(() => {
-      const response = getAssistantResponse(input);
-      setMessages(prev => [...prev, { role: 'assistant', content: response }]);
+    if (!input.trim() || isProcessing) return;
+
+    try {
+      setIsProcessing(true);
+      const userMessage: ChatMessage = { 
+        role: 'user', 
+        content: input,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, userMessage]);
+      setInput('');
+
+      // API call to backend
+      const response = await fetch('http://localhost:5000/api/assistant', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_id: 'current-user',
+          message: input
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
       
-      // Scroll to bottom
+      const data = await response.json();
+      const assistantMessage: ChatMessage = { 
+        role: 'assistant', 
+        content: data.response,
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, assistantMessage]);
+      
+      // Text-to-speech
+      if (synthesis.current) {
+        const utterance = new SpeechSynthesisUtterance(data.response);
+        utterance.rate = 0.9; // Slightly slower
+        utterance.pitch = 1.1; // Slightly higher pitch
+
+        // Handle speech start and end events
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+
+        synthesis.current.speak(utterance);
+      }
+
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Communication Error",
+        description: error instanceof Error ? error.message : "Failed to get assistant response"
+      });
+    } finally {
+      setIsProcessing(false);
       scrollToBottom();
-    }, 1000);
+    }
   };
 
   const toggleListening = () => {
-    if (!isListening) {
-      // This would be implemented with a real speech recognition API
-      setIsListening(true);
-      // Simulate speech recognition
-      setTimeout(() => {
-        setInput("I'm feeling a bit overwhelmed today");
-        setIsListening(false);
-      }, 2000);
-    } else {
-      setIsListening(false);
+    if (recognition.current) {
+      if (!isListening) {
+        recognition.current.start();
+        setIsListening(true);
+      } else {
+        // Add a small delay before stopping
+        setTimeout(() => {
+          recognition.current.stop();
+          setIsListening(false);
+        }, 500); // 500ms delay
+      }
     }
   };
 
@@ -77,7 +165,7 @@ const AIAssistant: React.FC = () => {
 
   return (
     <>
-      {/* Floating button to open assistant */}
+      {/* Floating button */}
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
@@ -158,14 +246,34 @@ const AIAssistant: React.FC = () => {
                 >
                   {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
                 </Button>
+                {/* Add the stop speech button here */}
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="ghost"
+                  onClick={stopSpeech}
+                  disabled={!isSpeaking}
+                  className="flex-shrink-0"
+                >
+                  <X className="h-5 w-5" /> {/* Use a stop icon if available */}
+                </Button>
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type a message..."
                   className="flex-1"
                 />
-                <Button type="submit" size="icon" className="flex-shrink-0">
-                  <Send className="h-4 w-4" />
+                <Button 
+                  type="submit" 
+                  size="icon" 
+                  className="flex-shrink-0"
+                  disabled={isProcessing}
+                >
+                  {isProcessing ? (
+                    <div className="h-4 w-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
                 </Button>
               </form>
             </CardFooter>

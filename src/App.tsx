@@ -17,6 +17,7 @@ import RemindersPage from "./pages/RemindersPage";
 import ContactUsPage from "./pages/ContactUsPage";
 import NotFound from "./pages/NotFound";
 import AIAssistant from "./components/AIAssistant";
+import ReminderPage from "./pages/Reminders";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/memory-game" element={<MemoryGamePage />} />
               <Route path="/reminders" element={<RemindersPage />} />
               <Route path="/contact-us" element={<ContactUsPage />} />
+              <Route path="/reminder" element={<ReminderPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </AnimatePresence>

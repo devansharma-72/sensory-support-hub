@@ -37,7 +37,7 @@ const Dashboard = () => {
           description: 'Set custom notifications for important tasks and events',
           icon: Bell,
           color: 'sensory-calm',
-          onClick: () => navigate('/reminders'),
+          onClick: () => navigate('/reminder'),
         },
         {
           title: 'Focus Timer',

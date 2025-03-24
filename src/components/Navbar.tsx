@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
     { name: 'Home', path: '/' },
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Focus Timer', path: '/focus-timer' },
-    { name: 'Journal', path: '/journal' },
+    { name: 'Reminders', path: '/reminder' },
     { name: 'Scenario Talks', path: '/scenario-talks' },
     { name: 'Contact Us', path: '/contact-us' },
   ];
